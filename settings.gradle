@@ -1,1 +1,1 @@
-include ':ferro-core', ':ferro-mvp'
+include ':ferro-core', ':ferro-mvp', ':ferro-rx'
