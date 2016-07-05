@@ -34,11 +34,15 @@ import rx.subscriptions.CompositeSubscription;
  * If subscribe to {@link Observable} via one of {@link #subscribe(Observable, Subscriber)} method,
  * all rx events (onNext, onError, onComplete) would be frozen when view destroyed and unfrozen
  * when view recreated (see {@link OperatorFreeze}).
- * If option freezeEventOnPause enabled (see {@link #setFreezeOnPauseEnabled(boolean)}, all events
- * would be also frozen when screen paused and unfrozen when screen resumed.
+ *
  * When screen finally destroyed, all subscriptions would be automatically unsubscribed.
  *
  * When configuration changed, presenter isn't destroyed and reused for new view
+ *
+ * If option freezeEventOnPause enabled (see {@link #setFreezeOnPauseEnabled(boolean)}, all events
+ * would be also frozen when screen paused and unfrozen when screen resumed.
+ * If option freezeEventOnPause disabled, screen may handle event when it invisible
+ * (e.g. when Activity in back stack) and user can miss important information e.g. SnackBar
  */
 public class MvpRxPresenter<V extends BaseView> extends MvpPresenter<V> {
 
