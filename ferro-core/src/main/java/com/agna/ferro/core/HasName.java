@@ -16,5 +16,8 @@
 package com.agna.ferro.core;
 
 public interface HasName {
+    /**
+     * @return name
+     */
     String getName();
 }

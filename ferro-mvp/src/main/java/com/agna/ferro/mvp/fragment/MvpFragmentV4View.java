@@ -16,15 +16,12 @@
 package com.agna.ferro.mvp.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 
 import com.agna.ferro.core.PSSFragmentV4;
 import com.agna.ferro.core.PersistentScreenScope;
 import com.agna.ferro.mvp.BaseView;
 import com.agna.ferro.mvp.dagger.ScreenComponent;
-import com.agna.ferro.mvp.dagger.module.MvpActivityModule;
-import com.agna.ferro.mvp.dagger.module.MvpFragmentV4Module;
 import com.agna.ferro.mvp.dagger.provider.ActivityProvider;
 import com.agna.ferro.mvp.dagger.provider.FragmentProvider;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
@@ -32,21 +29,21 @@ import com.agna.ferro.mvp.presenter.MvpPresenter;
 
 /**
  * Base class for view, based on {@link PSSFragmentV4}.
- *
+ * <p>
  * This view save dagger component of the screen in {@link PersistentScreenScope} and reused it,
  * when configuration changed. {@link MvpPresenter} also would be saved, because it is part of
  * dagger component (presenter must be injected in view via dagger mechanism).
  * Dagger component will be destroyed when the screen is finally destroyed,
  * see {@link PersistentScreenScope} life cycle.
- *
+ * <p>
  * Objects, provided by dagger component must not contains direct link to Activity, Fragment etc.
  * But if you want to has access to it, you can use {@link ActivityProvider} or
- * {@link FragmentProvider}, which provided by {@link MvpActivityModule} and
- * {@link MvpFragmentV4Module} respectively.
+ * {@link FragmentProvider}.
+ *
+ * The name from {@link BaseView#getName()} used for distinguish one {@link PersistentScreenScope}
+ * from another inside one Activity. You can use this name for logging, analytics etc.
  */
 public abstract class MvpFragmentV4View extends PSSFragmentV4 implements BaseView {
-
-    private Handler handler = new Handler();
 
     /**
      * @return dagger component of the screen
@@ -54,17 +51,22 @@ public abstract class MvpFragmentV4View extends PSSFragmentV4 implements BaseVie
     protected abstract ScreenComponent createScreenComponent();
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public final void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         satisfyDependencies();
         bindPresenter();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                getPresenter().onLoad(isScreenRecreated());
-                getPresenter().onLoadFinished();
-            }
-        });
+        onActivityCreated(savedInstanceState, isScreenRecreated());
+        getPresenter().onLoad(isScreenRecreated());
+        getPresenter().onLoadFinished();
+    }
+
+    /**
+     * Override this instead {@link #onActivityCreated(Bundle)}
+     * @param screenRecreated show whether screen created in first time or recreated after
+     *                        changing configuration
+     */
+    public void onActivityCreated(Bundle savedInstanceState, boolean screenRecreated) {
+
     }
 
     /**
@@ -80,6 +82,18 @@ public abstract class MvpFragmentV4View extends PSSFragmentV4 implements BaseVie
     public void onStart() {
         super.onStart();
         getPresenter().onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPresenter().onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPresenter().onPause();
     }
 
     @Override

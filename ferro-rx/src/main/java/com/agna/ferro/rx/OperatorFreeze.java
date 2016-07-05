@@ -27,8 +27,8 @@ import rx.observers.SerializedSubscriber;
 
 /**
  * This operator freezes all rx events (onNext, onError, onComplete) when freeze selector emits true,
- * and defreeze it after freeze selector emits false.
- * If freeze selector not emit any elements, all events would be freezed
+ * and unfreeze it after freeze selector emits false.
+ * If freeze selector does not emit any elements, all events would be frozen
  * If you want reduce num of elements in freeze buffer, you can define replaceFrozenEventPredicate.
  * When Observable frozen and source observable emits normal (onNext) event, before it is added to
  * the end of buffer, it compare with all already buffered events using replaceFrozenEventPredicate,

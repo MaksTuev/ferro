@@ -23,6 +23,9 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * This activity provide access to own {@link PersistentScreenScope}
  * PSS - PersistentScreenScope
+ *
+ * The name from {@link HasName#getName()} used for distinguish one PersistentScreenScope from
+ * another inside one Activity. You can use this name for logging, analytics etc.
  */
 public abstract class PSSActivity extends AppCompatActivity implements HasName {
 

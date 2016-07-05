@@ -15,9 +15,10 @@
  */
 package com.agna.ferro.mvp;
 
+import com.agna.ferro.core.HasName;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 
-public interface BaseView {
+public interface BaseView extends HasName {
 
     /**
      * @return presenter of the screen

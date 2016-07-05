@@ -34,12 +34,22 @@ import rx.subscriptions.CompositeSubscription;
  * If subscribe to {@link Observable} via one of {@link #subscribe(Observable, Subscriber)} method,
  * all rx events (onNext, onError, onComplete) would be frozen when view destroyed and unfrozen
  * when view recreated (see {@link OperatorFreeze}).
+ * If option freezeEventOnPause enabled (see {@link #setFreezeOnPauseEnabled(boolean)}, all events
+ * would be also frozen when screen paused and unfrozen when screen resumed.
  * When screen finally destroyed, all subscriptions would be automatically unsubscribed.
+ *
+ * When configuration changed, presenter isn't destroyed and reused for new view
  */
 public class MvpRxPresenter<V extends BaseView> extends MvpPresenter<V> {
 
     private final CompositeSubscription subscriptions = new CompositeSubscription();
     private final BehaviorSubject<Boolean> freezeSelector = BehaviorSubject.create(false);
+    private boolean freezeEventsOnPause = true;
+
+    @Override
+    public void onLoad(boolean screenRecreated) {
+        super.onLoad(screenRecreated);
+    }
 
     @CallSuper
     @Override
@@ -50,17 +60,20 @@ public class MvpRxPresenter<V extends BaseView> extends MvpPresenter<V> {
 
     @CallSuper
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         freezeSelector.onNext(false);
     }
 
     @CallSuper
     @Override
-    public void onStop() {
-        super.onStop();
-        freezeSelector.onNext(true);
+    public void onPause() {
+        super.onPause();
+        if(freezeEventsOnPause) {
+            freezeSelector.onNext(true);
+        }
     }
+
 
     @CallSuper
     @Override
@@ -76,9 +89,25 @@ public class MvpRxPresenter<V extends BaseView> extends MvpPresenter<V> {
         subscriptions.unsubscribe();
     }
 
+    /**
+     * If true, all rx event would be frozen when screen paused, and unfrozen when screen resumed,
+     * otherwise event would be frozen when {@link #onViewDetached()} called.
+     * Default enabled.
+     * @param enabled
+     */
+    public void setFreezeOnPauseEnabled(boolean enabled) {
+        this.freezeEventsOnPause = enabled;
+    }
+
+    /**
+     * Apply {@link OperatorFreeze} and subscribe subscriber to the observable.
+     * When screen finally destroyed, all subscriptions would be automatically unsubscribed.
+     * For more information see description of this class.
+     * @return subscription
+     */
     private <T> Subscription subscribe(final Observable<T> observable,
-                                       final Subscriber<T> subscriber,
-                                       final Observable.Operator<T, T> operator) {
+                                       final OperatorFreeze<T> operator,
+                                       final Subscriber<T> subscriber) {
         Subscription subscription = observable
                 .lift(operator)
                 .subscribe(subscriber);
@@ -86,56 +115,81 @@ public class MvpRxPresenter<V extends BaseView> extends MvpPresenter<V> {
         return subscription;
     }
 
+    /**
+     * @see #subscribe(Observable, OperatorFreeze, Subscriber)
+     */
     private <T> Subscription subscribe(final Observable<T> observable,
+                                       final OperatorFreeze<T> operator,
                                        final Action1<T> onNext,
-                                       final Action1<Throwable> onError,
-                                       final Observable.Operator<T, T> operator) {
-        return subscribe(observable, new Subscriber<T>() {
-            @Override
-            public void onCompleted() {
-                // do nothing
-            }
+                                       final Action1<Throwable> onError) {
+        return subscribe(observable, operator,
+                new Subscriber<T>() {
+                    @Override
+                    public void onCompleted() {
+                        // do nothing
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                onError.call(e);
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        onError.call(e);
+                    }
 
-            @Override
-            public void onNext(T t) {
-                onNext.call(t);
-            }
-        }, operator);
+                    @Override
+                    public void onNext(T t) {
+                        onNext.call(t);
+                    }
+                });
     }
 
+    /**
+     * @see #subscribe(Observable, OperatorFreeze, Subscriber)
+     * @param replaceFrozenEventPredicate - used for reduce num element in freeze buffer
+     *                                    @see OperatorFreeze
+     */
     protected <T> Subscription subscribe(final Observable<T> observable,
-                                         final Subscriber<T> subscriber,
-                                         final Func2<T, T, Boolean> replaceFrozenEventPredicate) {
+                                         final Func2<T, T, Boolean> replaceFrozenEventPredicate,
+                                         final Subscriber<T> subscriber) {
 
-        return subscribe(observable, subscriber, createOperatorFreeze(replaceFrozenEventPredicate));
+        return subscribe(observable, createOperatorFreeze(replaceFrozenEventPredicate), subscriber);
     }
 
+    /**
+     * @see @link #subscribe(Observable, OperatorFreeze, Subscriber)
+     * @param replaceFrozenEventPredicate - used for reduce num element in freeze buffer
+     *                                    @see @link OperatorFreeze
+     */
     protected <T> Subscription subscribe(final Observable<T> observable,
+                                         final Func2<T, T, Boolean> replaceFrozenEventPredicate,
                                          final Action1<T> onNext,
-                                         final Action1<Throwable> onError,
-                                         final Func2<T, T, Boolean> replaceFrozenEventPredicate) {
+                                         final Action1<Throwable> onError) {
 
-        return subscribe(observable, onNext, onError, createOperatorFreeze(replaceFrozenEventPredicate));
+        return subscribe(observable, createOperatorFreeze(replaceFrozenEventPredicate), onNext, onError);
     }
 
+    /**
+     * @see @link #subscribe(Observable, OperatorFreeze, Subscriber)
+     */
     protected <T> Subscription subscribe(final Observable<T> observable,
                                          final Subscriber<T> subscriber) {
 
-        return subscribe(observable, subscriber, this.<T>createOperatorFreeze());
+        return subscribe(observable, this.<T>createOperatorFreeze(), subscriber);
     }
 
+    /**
+     * @see @link #subscribe(Observable, OperatorFreeze, Subscriber)
+     */
     protected <T> Subscription subscribe(final Observable<T> observable,
                                          final Action1<T> onNext,
                                          final Action1<Throwable> onError) {
 
-        return subscribe(observable, onNext, onError, this.<T>createOperatorFreeze());
+        return subscribe(observable, this.<T>createOperatorFreeze(), onNext, onError);
     }
 
+    /**
+     * Subscribe subscriber to the observable without applying {@link OperatorFreeze}
+     * When screen finally destroyed, all subscriptions would be automatically unsubscribed.
+     * @return subscription
+     */
     protected <T> Subscription subscribeWithoutFreezing(final Observable<T> observable,
                                                         final Subscriber<T> subscriber) {
 
@@ -145,6 +199,9 @@ public class MvpRxPresenter<V extends BaseView> extends MvpPresenter<V> {
         return subscription;
     }
 
+    /**
+     * @see @link #subscribeWithoutFreezing(Observable, Subscriber)
+     */
     protected <T> Subscription subscribeWithoutFreezing(final Observable<T> observable,
                                                         final Action1<T> onNext,
                                                         final Action1<Throwable> onError) {

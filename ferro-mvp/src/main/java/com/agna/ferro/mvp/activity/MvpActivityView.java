@@ -16,7 +16,6 @@
 package com.agna.ferro.mvp.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 
@@ -24,8 +23,6 @@ import com.agna.ferro.core.PSSActivity;
 import com.agna.ferro.core.PersistentScreenScope;
 import com.agna.ferro.mvp.BaseView;
 import com.agna.ferro.mvp.dagger.ScreenComponent;
-import com.agna.ferro.mvp.dagger.module.MvpActivityModule;
-import com.agna.ferro.mvp.dagger.module.MvpFragmentV4Module;
 import com.agna.ferro.mvp.dagger.provider.ActivityProvider;
 import com.agna.ferro.mvp.dagger.provider.FragmentProvider;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
@@ -42,12 +39,12 @@ import com.agna.ferro.mvp.presenter.MvpPresenter;
  *
  * Objects, provided by dagger component must not contains direct link to Activity, Fragment etc.
  * But if you want to has access to it, you can use {@link ActivityProvider} or
- * {@link FragmentProvider}, which provided by {@link MvpActivityModule} and
- * {@link MvpFragmentV4Module} respectively.
+ * {@link FragmentProvider}.
+ *
+ * The name from {@link BaseView#getName()} used for distinguish one {@link PersistentScreenScope}
+ * from another inside one Activity. You can use this name for logging, analytics etc.
  */
 public abstract class MvpActivityView extends PSSActivity implements BaseView {
-
-    private Handler handler = new Handler();
 
     /**
      * @return layout resource of the screen
@@ -61,24 +58,46 @@ public abstract class MvpActivityView extends PSSActivity implements BaseView {
     protected abstract ScreenComponent createScreenComponent();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
         satisfyDependencies();
         bindPresenter();
+        onCreate(savedInstanceState, isScreenRecreated());
         getPresenter().onLoad(isScreenRecreated());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                getPresenter().onLoadFinished();
-            }
-        });
+        getPresenter().onLoadFinished();
+    }
+
+    /**
+     * Override this instead {@link #onCreate(Bundle)}
+     * @param screenRecreated show whether screen created in first time or recreated after
+     *                        changing configuration
+     */
+    protected void onCreate(Bundle savedInstanceState, boolean screenRecreated) {
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         getPresenter().onStart();
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return super.onRetainCustomNonConfigurationInstance();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPresenter().onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getPresenter().onPause();
     }
 
     @Override

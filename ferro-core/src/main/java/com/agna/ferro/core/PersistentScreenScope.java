@@ -33,10 +33,10 @@ import java.util.Set;
  * {@link PSSFragmentV4}.
  *
  * This storage destroyed only if parent screen is finally destroyed (e.g. after Activity.finish()).
- * If you manually destroy screen, based on {@link PSSFragmentV4}, and you want immediately
- * destroy PersistentScreenScope need call {@link this#destroy()} or
+ * If you manually destroy screen, based on {@link PSSFragmentV4} via FragmentManager, and you want
+ * immediately destroy PersistentScreenScope need call {@link #destroy()} or
  * {@link PersistentScreenScope#destroy(AppCompatActivity, String)},
- * otherwise PersistentScreenScope to be destroyed after the root activity is destroyed.
+ * otherwise PersistentScreenScope to be destroyed after the root activity is finally destroyed.
  * In reality, PersistentScreenScope is retained fragment without view.
  */
 public class PersistentScreenScope extends Fragment {

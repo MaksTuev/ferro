@@ -15,6 +15,8 @@
  */
 package com.agna.ferro.mvp.presenter;
 
+import android.util.Log;
+
 import com.agna.ferro.core.PersistentScreenScope;
 import com.agna.ferro.mvp.BaseView;
 
@@ -44,7 +46,8 @@ public class MvpPresenter<V extends BaseView> {
 
     /**
      * This method is called, when view is ready
-     * @param screenRecreated - whether view is recreated
+     * @param screenRecreated - show whether screen created in first time or recreated after
+     *                        changing configuration
      */
     public void onLoad(boolean screenRecreated) {
     }
@@ -60,6 +63,20 @@ public class MvpPresenter<V extends BaseView> {
      * Called when view is started
      */
     public void onStart(){
+
+    }
+
+    /**
+     * Called when view is resumed
+     */
+    public void onResume(){
+
+    }
+
+    /**
+     * Called when view is paused
+     */
+    public void onPause(){
 
     }
 
