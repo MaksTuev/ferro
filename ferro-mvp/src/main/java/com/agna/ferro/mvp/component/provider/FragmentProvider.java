@@ -13,13 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.agna.ferro.mvp.dagger;
+package com.agna.ferro.mvp.component.provider;
 
-import com.agna.ferro.mvp.BaseView;
+
+import android.support.v4.app.Fragment;
+
+import com.agna.ferro.core.PersistentScreenScope;
 
 /**
- * Base class for all dagger screen components
+ * Provider for Fragment
+ * every call {@link this#get()} return actual Fragment
  */
-public interface ScreenComponent<V extends BaseView> {
-    void inject(V view);
+public class FragmentProvider {
+    private PersistentScreenScope screenScope;
+
+    public FragmentProvider(PersistentScreenScope screenScope) {
+        this.screenScope = screenScope;
+    }
+
+    /**
+     * @return actual Fragment
+     */
+    public Fragment get() {
+        return screenScope.getTargetFragment();
+    }
 }

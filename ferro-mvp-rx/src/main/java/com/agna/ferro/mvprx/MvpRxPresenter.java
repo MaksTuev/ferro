@@ -17,7 +17,7 @@ package com.agna.ferro.mvprx;
 
 import android.support.annotation.CallSuper;
 
-import com.agna.ferro.mvp.BaseView;
+import com.agna.ferro.mvp.view.BaseView;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 import com.agna.ferro.rx.OperatorFreeze;
 
@@ -50,9 +50,14 @@ public class MvpRxPresenter<V extends BaseView> extends MvpPresenter<V> {
     private final BehaviorSubject<Boolean> freezeSelector = BehaviorSubject.create(false);
     private boolean freezeEventsOnPause = true;
 
+    /**
+     * This method is called, when view is ready
+     * @param viewRecreated - show whether view created in first time or recreated after
+     *                        changing configuration
+     */
     @Override
-    public void onLoad(boolean screenRecreated) {
-        super.onLoad(screenRecreated);
+    public void onLoad(boolean viewRecreated) {
+        super.onLoad(viewRecreated);
     }
 
     @CallSuper

@@ -118,10 +118,10 @@ public class PersistentScreenScope extends Fragment {
      * @return object from scope
      */
     @Nullable
-    public <T> T getObject(Class<T> clazz, String tag) {
+    public <T> T getObject(String tag) {
         assertNotDestroyed();
         ObjectKey key = new ObjectKey(tag);
-        return clazz.cast(objects.get(key));
+        return (T)objects.get(key);
     }
 
     /**

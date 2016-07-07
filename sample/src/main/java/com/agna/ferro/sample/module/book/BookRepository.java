@@ -2,10 +2,9 @@ package com.agna.ferro.sample.module.book;
 
 import android.content.Context;
 
-import com.agna.ferro.mvp.dagger.scope.PerApplication;
+import com.agna.ferro.mvp.component.scope.PerApplication;
 import com.agna.ferro.sample.R;
 import com.agna.ferro.sample.domain.entity.Book;
-import com.annimon.stream.Stream;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,10 +47,9 @@ public class BookRepository {
      */
     public Observable<Book> getBook(String bookId) {
         return Observable.timer(3, TimeUnit.SECONDS)
-                .flatMap(t -> Observable.just(Stream.of(books)
-                        .filter(book -> book.getId().equals(bookId))
-                        .findFirst()
-                        .get()));
+                .flatMap(t -> Observable.from(books))
+                .filter(book -> book.getId().equals(bookId))
+                .first();
     }
 
     /**

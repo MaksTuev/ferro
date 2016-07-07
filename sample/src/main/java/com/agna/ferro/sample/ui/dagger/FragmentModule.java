@@ -1,10 +1,10 @@
 package com.agna.ferro.sample.ui.dagger;
 
 import com.agna.ferro.core.PersistentScreenScope;
-import com.agna.ferro.mvp.dagger.provider.ActivityProvider;
-import com.agna.ferro.mvp.dagger.provider.FragmentProvider;
-import com.agna.ferro.mvp.dagger.scope.PerScreen;
-import com.agna.ferro.mvp.fragment.MvpFragmentV4View;
+import com.agna.ferro.mvp.component.provider.ActivityProvider;
+import com.agna.ferro.mvp.component.provider.FragmentProvider;
+import com.agna.ferro.mvp.component.scope.PerScreen;
+import com.agna.ferro.mvp.view.fragment.MvpFragmentV4View;
 
 import dagger.Module;
 import dagger.Provides;

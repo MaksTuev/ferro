@@ -15,16 +15,15 @@
  */
 package com.agna.ferro.mvp.presenter;
 
-import android.util.Log;
-
 import com.agna.ferro.core.PersistentScreenScope;
-import com.agna.ferro.mvp.BaseView;
+import com.agna.ferro.mvp.view.BaseView;
+import com.agna.ferro.mvp.component.ScreenComponent;
 
 /**
  * Base class for presenter.
  * When configuration changed, presenter isn't destroyed and reused for new view
  * <p>
- * Presenter must be injected in view via dagger mechanism.
+ * Presenter must be injected in view in method {@link ScreenComponent#inject(BaseView)}.
  * It contains methods corresponding to the screen life cycle.
  *
  * @param <V> - View type
@@ -46,10 +45,10 @@ public class MvpPresenter<V extends BaseView> {
 
     /**
      * This method is called, when view is ready
-     * @param screenRecreated - show whether screen created in first time or recreated after
+     * @param viewRecreated - show whether view created in first time or recreated after
      *                        changing configuration
      */
-    public void onLoad(boolean screenRecreated) {
+    public void onLoad(boolean viewRecreated) {
     }
 
     /**

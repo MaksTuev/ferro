@@ -1,6 +1,6 @@
 package com.agna.ferro.sample.ui.base;
 
-import com.agna.ferro.mvp.activity.MvpActivityView;
+import com.agna.ferro.mvp.view.activity.MvpActivityView;
 import com.agna.ferro.sample.app.App;
 import com.agna.ferro.sample.app.AppComponent;
 

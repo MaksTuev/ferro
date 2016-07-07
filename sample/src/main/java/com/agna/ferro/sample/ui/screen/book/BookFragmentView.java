@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.agna.ferro.mvp.dagger.ScreenComponent;
-import com.agna.ferro.mvp.fragment.MvpFragmentV4View;
+import com.agna.ferro.mvp.component.ScreenComponent;
+import com.agna.ferro.mvp.view.fragment.MvpFragmentV4View;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 import com.agna.ferro.sample.R;
 import com.agna.ferro.sample.domain.entity.Book;

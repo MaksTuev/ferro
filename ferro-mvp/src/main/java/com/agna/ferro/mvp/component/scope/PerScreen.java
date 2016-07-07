@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.agna.ferro.mvp.dagger.scope;
+package com.agna.ferro.mvp.component.scope;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import javax.inject.Scope;
 
-
 /**
- * Application-level dagger scope
+ * Screen-level dagger scope
  */
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PerApplication {
+public @interface PerScreen {
 }

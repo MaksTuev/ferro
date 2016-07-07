@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.agna.ferro.mvp;
+package com.agna.ferro.mvp.component;
 
-import com.agna.ferro.core.HasName;
-import com.agna.ferro.mvp.presenter.MvpPresenter;
+import com.agna.ferro.mvp.view.BaseView;
 
-public interface BaseView extends HasName {
-
-    /**
-     * @return presenter of the screen
-     */
-    MvpPresenter getPresenter();
-
-    /**
-     * Bind presenter to this view
-     */
-    void bindPresenter();
+/**
+ * Base class for all screen components
+ */
+public interface ScreenComponent<V extends BaseView> {
+    void inject(V view);
 }

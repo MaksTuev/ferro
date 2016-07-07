@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.agna.ferro.mvp.activity;
+package com.agna.ferro.mvp.view.activity;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -21,30 +21,37 @@ import android.support.annotation.Nullable;
 
 import com.agna.ferro.core.PSSActivity;
 import com.agna.ferro.core.PersistentScreenScope;
-import com.agna.ferro.mvp.BaseView;
-import com.agna.ferro.mvp.dagger.ScreenComponent;
-import com.agna.ferro.mvp.dagger.provider.ActivityProvider;
-import com.agna.ferro.mvp.dagger.provider.FragmentProvider;
+import com.agna.ferro.mvp.view.BaseView;
+import com.agna.ferro.mvp.component.ScreenComponent;
+import com.agna.ferro.mvp.component.provider.ActivityProvider;
+import com.agna.ferro.mvp.component.provider.FragmentProvider;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 
 
 /**
  * Base class for view, based on {@link PSSActivity}.
  *
- * This view save dagger component of the screen in {@link PersistentScreenScope} and reused it,
- * when configuration changed. {@link MvpPresenter} also would be saved, because it is part of
- * dagger component (presenter must be injected in view via dagger mechanism).
- * Dagger component will be destroyed when the screen is finally destroyed,
+ * This view save its {@link ScreenComponent} in {@link PersistentScreenScope} and reused it,
+ * when configuration changed. Screen's {@link MvpPresenter} must be part of ScreenComponent and
+ * must be inserted in this view in method {@link ScreenComponent#inject(BaseView)}.
+ * The simplest way is when ScreenComponent is dagger component.
+ *
+ * ScreenComponent will be destroyed when the screen is finally destroyed,
  * see {@link PersistentScreenScope} life cycle.
  *
- * Objects, provided by dagger component must not contains direct link to Activity, Fragment etc.
- * But if you want to has access to it, you can use {@link ActivityProvider} or
- * {@link FragmentProvider}.
+ * Objects (besides presenter), provided by ScreenComponent must not contains direct link to
+ * Activity, Fragment etc. But if you want to has access to it, you can use {@link ActivityProvider}
+ * or {@link FragmentProvider}.
  *
  * The name from {@link BaseView#getName()} used for distinguish one {@link PersistentScreenScope}
  * from another inside one Activity. You can use this name for logging, analytics etc.
  */
 public abstract class MvpActivityView extends PSSActivity implements BaseView {
+
+    /**
+     * @return unique screen name
+     */
+    public abstract String getName();
 
     /**
      * @return layout resource of the screen
@@ -53,7 +60,7 @@ public abstract class MvpActivityView extends PSSActivity implements BaseView {
     protected abstract int getContentView();
 
     /**
-     * @return dagger component of the screen
+     * @return screen component
      */
     protected abstract ScreenComponent createScreenComponent();
 
@@ -70,10 +77,10 @@ public abstract class MvpActivityView extends PSSActivity implements BaseView {
 
     /**
      * Override this instead {@link #onCreate(Bundle)}
-     * @param screenRecreated show whether screen created in first time or recreated after
+     * @param viewRecreated show whether view created in first time or recreated after
      *                        changing configuration
      */
-    protected void onCreate(Bundle savedInstanceState, boolean screenRecreated) {
+    protected void onCreate(Bundle savedInstanceState, boolean viewRecreated) {
 
     }
 
@@ -107,11 +114,10 @@ public abstract class MvpActivityView extends PSSActivity implements BaseView {
     }
 
     /**
-     * Satisfy dagger dependencies
+     * Satisfy dependencies
      */
     protected void satisfyDependencies() {
         PersistentScreenScope screenScope = getPersistentScreenScope();
-        assert screenScope != null;
         ScreenComponent component = getScreenComponent();
         if (component == null) {
             component = createScreenComponent();

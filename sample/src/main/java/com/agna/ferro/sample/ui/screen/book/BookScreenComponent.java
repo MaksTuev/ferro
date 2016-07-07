@@ -1,7 +1,7 @@
 package com.agna.ferro.sample.ui.screen.book;
 
-import com.agna.ferro.mvp.dagger.ScreenComponent;
-import com.agna.ferro.mvp.dagger.scope.PerScreen;
+import com.agna.ferro.mvp.component.ScreenComponent;
+import com.agna.ferro.mvp.component.scope.PerScreen;
 import com.agna.ferro.sample.app.AppComponent;
 
 import dagger.Component;

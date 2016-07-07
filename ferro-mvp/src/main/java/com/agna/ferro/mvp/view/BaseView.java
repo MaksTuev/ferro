@@ -13,27 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.agna.ferro.mvp.dagger.provider;
+package com.agna.ferro.mvp.view;
 
-import android.app.Activity;
+import com.agna.ferro.core.HasName;
+import com.agna.ferro.mvp.presenter.MvpPresenter;
 
-import com.agna.ferro.core.PersistentScreenScope;
-
-/**
- * Provider for Activity
- * every call {@link this#get()} return actual Activity
- */
-public class ActivityProvider {
-    private PersistentScreenScope screenScope;
-
-    public ActivityProvider(PersistentScreenScope screenScope) {
-        this.screenScope = screenScope;
-    }
+public interface BaseView extends HasName {
 
     /**
-     * @return actual Activity
+     * @return presenter of the screen
      */
-    public Activity get() {
-        return screenScope.getActivity();
-    }
+    MvpPresenter getPresenter();
+
+    /**
+     * Bind presenter to this view
+     */
+    void bindPresenter();
 }

@@ -1,7 +1,7 @@
 package com.agna.ferro.sample.ui.navigation;
 
-import com.agna.ferro.mvp.dagger.provider.ActivityProvider;
-import com.agna.ferro.mvp.dagger.scope.PerScreen;
+import com.agna.ferro.mvp.component.provider.ActivityProvider;
+import com.agna.ferro.mvp.component.scope.PerScreen;
 import com.agna.ferro.sample.ui.screen.book.BookActivity;
 
 import javax.inject.Inject;

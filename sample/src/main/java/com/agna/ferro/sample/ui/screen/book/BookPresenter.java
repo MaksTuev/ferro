@@ -1,6 +1,6 @@
 package com.agna.ferro.sample.ui.screen.book;
 
-import com.agna.ferro.mvp.dagger.scope.PerScreen;
+import com.agna.ferro.mvp.component.scope.PerScreen;
 import com.agna.ferro.mvprx.MvpRxPresenter;
 import com.agna.ferro.rx.OperatorFreeze;
 import com.agna.ferro.sample.domain.entity.Book;
@@ -16,14 +16,14 @@ import timber.log.Timber;
 
 /**
  * presenter for Book screen
- *
+ * <p>
  * Presenter with freeze logic.
  * If subscribe to {@link Observable} via one of {@link #subscribe(Observable, Subscriber)} method,
  * all rx events (onNext, onError, onComplete) would be frozen when view destroyed and unfrozen
  * when view recreated (see {@link OperatorFreeze}).
  * All events would be also frozen when screen paused and unfrozen when screen resumed.
  * When screen finally destroyed, all subscriptions would be automatically unsubscribed.
- *
+ * <p>
  * When configuration changed, presenter isn't destroyed and reused for new view
  */
 @PerScreen
@@ -42,10 +42,12 @@ class BookPresenter extends MvpRxPresenter<BookFragmentView> {
     }
 
     @Override
-    public void onLoad(boolean screenRecreated) {
-        super.onLoad(screenRecreated);
+    public void onLoad(boolean viewRecreated) {
+        super.onLoad(viewRecreated);
         tryLoadData();
-        observeChangingBook();
+        if (!viewRecreated) {
+            observeChangingBook();
+        }
     }
 
     public void downloadBook() {

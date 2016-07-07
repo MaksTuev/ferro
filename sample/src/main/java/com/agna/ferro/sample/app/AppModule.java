@@ -17,7 +17,7 @@ package com.agna.ferro.sample.app;
 
 import android.content.Context;
 
-import com.agna.ferro.mvp.dagger.scope.PerApplication;
+import com.agna.ferro.mvp.component.scope.PerApplication;
 
 import dagger.Module;
 import dagger.Provides;

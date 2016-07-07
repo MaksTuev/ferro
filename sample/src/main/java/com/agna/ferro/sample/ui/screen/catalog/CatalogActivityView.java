@@ -7,7 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.agna.ferro.mvp.dagger.ScreenComponent;
+import com.agna.ferro.mvp.component.ScreenComponent;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 import com.agna.ferro.sample.R;
 import com.agna.ferro.sample.domain.entity.Book;
@@ -59,8 +59,8 @@ public class CatalogActivityView extends BaseActivityView {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState, boolean screenRecreated) {
-        super.onCreate(savedInstanceState, screenRecreated);
+    protected void onCreate(Bundle savedInstanceState, boolean viewRecreated) {
+        super.onCreate(savedInstanceState, viewRecreated);
         findViews();
         initViews();
         initGrid();

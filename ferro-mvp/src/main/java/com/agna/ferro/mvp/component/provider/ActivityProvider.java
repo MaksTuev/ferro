@@ -13,20 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.agna.ferro.mvp.dagger.scope;
+package com.agna.ferro.mvp.component.provider;
 
-import com.agna.ferro.mvp.fragment.MvpFragmentV4View;
+import android.app.Activity;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import javax.inject.Scope;
+import com.agna.ferro.core.PersistentScreenScope;
 
 /**
- * Scope for activity, which contains screen, based on {@link MvpFragmentV4View}
+ * Provider for Activity
+ * every call {@link this#get()} return actual Activity
  */
-@Scope
-@Retention(RetentionPolicy.RUNTIME)
-public @interface PerScreenContainer {
+public class ActivityProvider {
+    private PersistentScreenScope screenScope;
 
+    public ActivityProvider(PersistentScreenScope screenScope) {
+        this.screenScope = screenScope;
+    }
+
+    /**
+     * @return actual Activity
+     */
+    public Activity get() {
+        return screenScope.getActivity();
+    }
 }
