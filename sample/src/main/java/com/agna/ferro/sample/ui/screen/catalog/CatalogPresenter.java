@@ -74,9 +74,11 @@ class CatalogPresenter extends MvpRxPresenter<CatalogActivityView> {
             onLoadBooksSuccess(books);
         } else if (isSubscriptionInactive(loadBookSubscription)) {
             //if data isn't loading now, start loading
-            //else simple wait while data has loaded
             getView().showLoading();
             loadData();
+        } else {
+            //else simple wait while data has loaded
+            getView().showLoading();
         }
     }
 

@@ -65,9 +65,11 @@ class BookPresenter extends MvpRxPresenter<BookFragmentView> {
             onLoadDataSuccess(fullBookModel);
         } else if (isSubscriptionInactive(loadFullBookSubscription)) {
             //if data isn't loading now, start loading
-            //else simple wait while data has loaded
             getView().showLoading();
             loadData();
+        } else {
+            //else simple wait while data has loaded
+            getView().showLoading();
         }
     }
 

@@ -47,18 +47,8 @@ public class PersistentScreenScope extends Fragment {
     private final Map<ObjectKey, Object> objects = new HashMap<>();
     private boolean destroyed = false;
 
-
     /**
-     * @param screenName - name of screen, returned from {@link PSSActivity#getName()} or
-     *                   {@link PSSFragmentV4#getName()}
-     * @return name of  {@link PersistentScreenScope}
-     */
-    static String getName(String screenName) {
-        return String.format(SCREEN_SCOPE_NAME_FORMAT, screenName);
-    }
-
-    /**
-     * destroy {@link PersistentScreenScope}
+     * Destroy {@link PersistentScreenScope}
      * This method need to use only if you manually destroy screen based on {@link PSSFragmentV4},
      * and you want immediately destroy PersistentScreenScope
      *
@@ -68,10 +58,37 @@ public class PersistentScreenScope extends Fragment {
     public static void destroy(AppCompatActivity rootActivity, String screenName) {
         PersistentScreenScope persistentScreenScope =
                 (PersistentScreenScope) rootActivity.getSupportFragmentManager()
-                .findFragmentByTag(getName(screenName));
+                        .findFragmentByTag(getName(screenName));
         if (persistentScreenScope != null) {
             persistentScreenScope.destroy();
         }
+    }
+
+    /**
+     * @return PersistentScreenScope for parentActivity or null, if it not exist
+     */
+    @Nullable
+    static PersistentScreenScope find(PSSActivity parentActivity){
+        return (PersistentScreenScope) parentActivity.getSupportFragmentManager()
+                .findFragmentByTag(getName(parentActivity.getName()));
+    }
+
+    /**
+     * @return PersistentScreenScope for parentFragment or null, if it not exist
+     */
+    @Nullable
+    static PersistentScreenScope find(PSSFragmentV4 parentFragment){
+        return (PersistentScreenScope) parentFragment.getFragmentManager()
+                .findFragmentByTag(getName(parentFragment.getName()));
+    }
+
+    /**
+     * @param screenName - name of screen, returned from {@link PSSActivity#getName()} or
+     *                   {@link PSSFragmentV4#getName()}
+     * @return name of  {@link PersistentScreenScope}
+     */
+    private static String getName(String screenName) {
+        return String.format(SCREEN_SCOPE_NAME_FORMAT, screenName);
     }
 
     @Override
@@ -156,6 +173,28 @@ public class PersistentScreenScope extends Fragment {
     public void removeOnScopeDestroyListener(OnScopeDestroyListener onScopeDestroyListener) {
         this.onScopeDestroyListeners.remove(onScopeDestroyListener);
     }
+
+    /**
+     * Bind this PersistentScreenScope to parentActivity
+     * @param parentActivity
+     */
+    void attach(PSSActivity parentActivity){
+        FragmentTransaction ft = parentActivity.getSupportFragmentManager().beginTransaction();
+        ft.add(this, PersistentScreenScope.getName(parentActivity.getName()));
+        ft.commit();
+    }
+
+    /**
+     * Bind this PersistentScreenScope to parentFragment
+     * @param parentFragment
+     */
+    void attach(PSSFragmentV4 parentFragment){
+        this.setTargetFragment(parentFragment, 0);
+        FragmentTransaction ft = parentFragment.getFragmentManager().beginTransaction();
+        ft.add(this, PersistentScreenScope.getName(parentFragment.getName()));
+        ft.commit();
+    }
+
 
     /**
      * Destroy scope

@@ -138,7 +138,9 @@ public abstract class MvpActivityView extends PSSActivity implements BaseView {
     @Override
     public final void bindPresenter() {
         getPresenter().attachView(this);
-        getPersistentScreenScope().addOnScopeDestroyListener(getPresenter().getOnScopeDestroyListener());
+        if(!isScreenRecreated()) {
+            getPersistentScreenScope().addOnScopeDestroyListener(getPresenter());
+        }
     }
 
     @Override

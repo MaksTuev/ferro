@@ -28,7 +28,8 @@ import com.agna.ferro.mvp.component.ScreenComponent;
  *
  * @param <V> - View type
  */
-public class MvpPresenter<V extends BaseView> {
+public class MvpPresenter<V extends BaseView> implements
+        PersistentScreenScope.OnScopeDestroyListener {
 
     private V view;
 
@@ -103,17 +104,5 @@ public class MvpPresenter<V extends BaseView> {
      */
     public void onDestroy() {
 
-    }
-
-    private PersistentScreenScope.OnScopeDestroyListener onScopeDestroyListener =
-            new PersistentScreenScope.OnScopeDestroyListener() {
-                @Override
-                public void onDestroy() {
-                    MvpPresenter.this.onDestroy();
-                }
-            };
-
-    public final PersistentScreenScope.OnScopeDestroyListener getOnScopeDestroyListener() {
-        return onScopeDestroyListener;
     }
 }

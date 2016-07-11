@@ -18,7 +18,6 @@ package com.agna.ferro.core;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 
 
 /**
@@ -63,23 +62,16 @@ public abstract class PSSFragmentV4 extends Fragment implements HasName {
     }
 
     private void initPersistentScreenScope() {
-        screenScope = findPersistentScreenScope();
+        screenScope = PersistentScreenScope.find(this);
         if (screenScope == null) {
             screenScope = createPersistentScreenScope();
-            screenScope.setTargetFragment(this, 0);
-            FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
-            fragmentTransaction.add(screenScope, PersistentScreenScope.getName(this.getName()));
-            fragmentTransaction.commit();
+            screenScope.attach(this);
+            screenRecreated = false;
         } else {
             screenRecreated = true;
         }
     }
 
-    @Nullable
-    private PersistentScreenScope findPersistentScreenScope() {
-        return (PersistentScreenScope) getFragmentManager()
-                .findFragmentByTag(PersistentScreenScope.getName(this.getName()));
-    }
 
     protected PersistentScreenScope createPersistentScreenScope() {
         return new PersistentScreenScope();
