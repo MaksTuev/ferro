@@ -35,4 +35,18 @@ If you use dagger, this library contains two scope annotations `@PerApplication`
 It's lifecycle of screen's objects: 
 ![lifecycle](ferro_lifecycle.png)
 
+The next extention add freeze logic for Rx events:
+##ferro-mvp-rx
+Class `MvpRxPesenter` contains freeze logic, scematic work of which showed in gif above. This class should extend instead `MvpPresenter`
+
+If subscribe to `Observable` via one of `MvpRxPesenter#subscribe()` method,
+all rx events (onNext, onError, onComplete) would be frozen when view destroyed and unfrozen
+when view recreated.
+If option freezeEventOnPause enabled (default enabled), all Rx events
+would be also frozen when screen paused and unfrozen when screen resumed.
+
+When screen finally destroyed, all subscriptions would be automatically unsubscribed.
+
+
+
 
