@@ -22,12 +22,17 @@ In reality, `PersistentScreenScope` is retained fragment without view.
 
 This mechanism is ideal for storing presenter, that is done in the next extention:
 ##ferro-mvp
-This library contains base classes for view, presenter and screen component. For each screen you need extend `ScreenComponent`, `MvpPresenter` and `MvpActivityView` or `MvpFragmentV4View`. The `ScreenComponent` will be saved in `PersistentScreenScope` and reused when view recreated.
-In method `ScreenComponent#inject(view)` you need insert presenter to the view. For this purpose the easiest way to use dagger component as `ScreenComponent`. 
+This library contains base classes for view, presenter and screen component. For each screen you need to extend `ScreenComponent`, `MvpPresenter` and `MvpActivityView` or `MvpFragmentV4View`. 
 
-Method `MvpPresenter#onLoad(viewRecreated)` will be called, when view is ready, flag `viewRecreated` means, that view is recreated after configuration change. In this method you need show on view previously loaded data if it exist.
+The `ScreenComponent` will be saved in `PersistentScreenScope` and reused when view recreated. In method `ScreenComponent#inject(view)` you need to insert presenter to the view. For this purpose the easiest way to use dagger component as `ScreenComponent`. Due to this mechanism presenter is reused after configuration change. 
+
+Method `MvpPresenter#onLoad(viewRecreated)` will be called, when view is ready, flag `viewRecreated` means, that view is recreated after configuration change. In this method you should show on view previously loaded data if it exist.
+
+In `MvpActivityView` you should override method `#onCreate()` with parameter `viewRecreated` instead of standard method `#onCreate()`. Same for `MvpFragmentV4View` and `onActivityCreated` method.
 
 If you use dagger, this library contains two scope annotations `@PerApplication` and `@PerScreen`. It also contains `ActivityProvider` and `FragmentProvider`, which can be used for getting access to Activity or Fragment inside objects, provided by dagger screen component (e.g. inside Navigator class).
 
+It's lifecycle of screen's objects: 
+![lifecycle](ferro_lifecycle.png)
 
 
