@@ -131,8 +131,8 @@ public abstract class MvpFragmentV4View extends PSSFragmentV4 implements BaseVie
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         getPresenter().detachView();
     }
 
