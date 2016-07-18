@@ -22,6 +22,7 @@ import java.util.ListIterator;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.exceptions.Exceptions;
 import rx.functions.Func2;
 import rx.observers.SerializedSubscriber;
 
@@ -33,6 +34,8 @@ import rx.observers.SerializedSubscriber;
  * When Observable frozen and source observable emits normal (onNext) event, before it is added to
  * the end of buffer, it compare with all already buffered events using replaceFrozenEventPredicate,
  * and if replaceFrozenEventPredicate return true, buffered element would be removed.
+ *
+ * Observable after this operator can emit event in different threads
  */
 
 public class OperatorFreeze<T> implements Observable.Operator<T, T> {
@@ -106,7 +109,7 @@ public class OperatorFreeze<T> implements Observable.Operator<T, T> {
 
         @Override
         public void onCompleted() {
-            if (error != null) {
+            if (done || error != null) {
                 return;
             }
             synchronized (this) {
@@ -121,7 +124,7 @@ public class OperatorFreeze<T> implements Observable.Operator<T, T> {
 
         @Override
         public void onError(Throwable e) {
-            if (done) {
+            if (done || error != null) {
                 return;
             }
             synchronized (this) {
@@ -149,10 +152,17 @@ public class OperatorFreeze<T> implements Observable.Operator<T, T> {
         }
 
         private void bufferEvent(T event) {
-            for(ListIterator<T> it = frozenEventsBuffer.listIterator(); it.hasNext(); ){
+            for (ListIterator<T> it = frozenEventsBuffer.listIterator(); it.hasNext(); ) {
                 T frozenEvent = it.next();
-                if(replaceFrozenEventPredicate.call(frozenEvent, event)){
-                    it.remove();
+                try {
+                    if (replaceFrozenEventPredicate.call(frozenEvent, event)) {
+                        it.remove();
+                    }
+                } catch (Throwable ex) {
+                    Exceptions.throwIfFatal(ex);
+                    unsubscribe();
+                    onError(ex);
+                    return;
                 }
             }
             frozenEventsBuffer.add(event);
@@ -172,11 +182,11 @@ public class OperatorFreeze<T> implements Observable.Operator<T, T> {
             this.frozen = frozen;
             if (!frozen) {
                 emitFrozenEvents();
-                if (done) {
-                    forceOnComplete();
-                }
                 if (error != null) {
                     forceOnError(error);
+                }
+                if (done) {
+                    forceOnComplete();
                 }
             }
         }
