@@ -30,7 +30,6 @@ import android.support.v4.app.Fragment;
 public abstract class PSSFragmentV4 extends Fragment implements HasName {
 
     private PersistentScreenScope screenScope;
-    private boolean screenRecreated = false;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public abstract class PSSFragmentV4 extends Fragment implements HasName {
      * @return true if screen was recreated after changing configuration
      */
     public boolean isScreenRecreated() {
-        return screenRecreated;
+        return screenScope.isScreenRecreated();
     }
 
     /**
@@ -66,9 +65,6 @@ public abstract class PSSFragmentV4 extends Fragment implements HasName {
         if (screenScope == null) {
             screenScope = createPersistentScreenScope();
             screenScope.attach(this);
-            screenRecreated = false;
-        } else {
-            screenRecreated = true;
         }
     }
 

@@ -46,6 +46,7 @@ public class PersistentScreenScope extends Fragment {
     private final Set<OnScopeDestroyListener> onScopeDestroyListeners = new HashSet<>();
     private final Map<ObjectKey, Object> objects = new HashMap<>();
     private boolean destroyed = false;
+    private boolean screenRecreated = false;
 
     /**
      * Destroy {@link PersistentScreenScope}
@@ -104,6 +105,16 @@ public class PersistentScreenScope extends Fragment {
         for (OnScopeDestroyListener onDestroyListener : onScopeDestroyListeners) {
             onDestroyListener.onDestroy();
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        screenRecreated = true;
+    }
+
+    public boolean isScreenRecreated(){
+        return screenRecreated;
     }
 
     /**

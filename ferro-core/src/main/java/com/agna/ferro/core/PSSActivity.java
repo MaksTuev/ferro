@@ -28,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 public abstract class PSSActivity extends AppCompatActivity implements HasName {
 
     private PersistentScreenScope screenScope;
-    private boolean screenRecreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public abstract class PSSActivity extends AppCompatActivity implements HasName {
      * @return true if screen was recreated after changing configuration
      */
     public boolean isScreenRecreated() {
-        return screenRecreated;
+        return screenScope.isScreenRecreated();
     }
 
     /**
@@ -56,9 +55,6 @@ public abstract class PSSActivity extends AppCompatActivity implements HasName {
         if (screenScope == null) {
             screenScope = createPersistentScreenScope();
             screenScope.attach(this);
-            screenRecreated = false;
-        } else {
-            screenRecreated = true;
         }
     }
 
