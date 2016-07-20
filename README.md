@@ -51,6 +51,24 @@ When screen finally destroyed, all subscriptions would be automatically unsubscr
 This library contains one rx operator (`OperatorFreeze`), which contains freeze logic. For apply it, you should pass this operator in method `Observable#lift()`.
 If you want to create own base classes for View and Presenter, you can use only `ferro-core` for saving presenter and `ferro-rx` for append freeze logic.
 
+##Dependency
+```groovy
+repositories {
+      jcenter()
+   }
+```
+
+```groovy
+dependencies {
+      //for use the full ferro
+      compile 'com.agna.ferro:ferro-mvp-rx:1.0.1'
+      //for use the part of ferro
+      compile 'com.agna.ferro:ferro-core:1.0.1'
+      compile 'com.agna.ferro:ferro-mvp:1.0.1'
+      compile 'com.agna.ferro:ferro-rx:1.0.1'
+   }
+```
+
 ## License
 ```
 Copyright 2016 Maxim Tuev
