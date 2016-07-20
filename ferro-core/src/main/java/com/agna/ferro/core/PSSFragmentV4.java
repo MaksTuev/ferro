@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Maxim Tuev.
+ * Copyright 2016 Maxim Tuev.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package com.agna.ferro.core;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 
@@ -32,7 +31,7 @@ public abstract class PSSFragmentV4 extends Fragment implements HasName {
     private PersistentScreenScope screenScope;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initPersistentScreenScope();
     }

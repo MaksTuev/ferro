@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+/*ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'ferro-mvp-rx'
+
+    publishedGroupId = 'com.agna.ferro'
+    libraryName = 'ferro-mvp-rx'
+    artifact = 'ferro-mvp-rx'
+
+    libraryDescription = 'Base classes for implement MVP pattern with persistent Presenter and freezable Rx events on Android'
+
+    siteUrl = 'https://github.com/MaksTuev/ferro'
+    gitUrl = 'https://github.com/MaksTuev/ferro.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'makstuev'
+    developerName = 'Maks Tuev'
+    developerEmail = 'maks.tuev@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}*/
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -8,7 +32,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -18,6 +42,11 @@ android {
     }
 }
 
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(":ferro-mvp")
@@ -25,3 +54,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
 }
+
+/*
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+*/
+
