@@ -25,7 +25,7 @@ import javax.inject.Inject;
 /**
  * View for Book screen
  */
-class BookFragmentView extends MvpFragmentV4View {
+public class BookFragmentView extends MvpFragmentV4View {
     private static final String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
 
     @Inject
@@ -35,7 +35,7 @@ class BookFragmentView extends MvpFragmentV4View {
     private ImageView coverIv;
     private Button downloadBtn;
     private View readBtn;
-    private TextView desctiptionTv;
+    private TextView descriptionTv;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Handler handler = new Handler();
     private View contentContainer;
@@ -98,7 +98,7 @@ class BookFragmentView extends MvpFragmentV4View {
         coverIv = (ImageView) view.findViewById(R.id.book_cover_iv);
         downloadBtn = (Button)view.findViewById(R.id.book_download_btn);
         readBtn = view.findViewById(R.id.book_read_btn);
-        desctiptionTv = (TextView) view.findViewById(R.id.book_description_tv);
+        descriptionTv = (TextView) view.findViewById(R.id.book_description_tv);
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.book_swr);
     }
 
@@ -112,7 +112,7 @@ class BookFragmentView extends MvpFragmentV4View {
                 .placeholder(R.drawable.book_placeholder)
                 .error(R.drawable.book_placeholder)
                 .into(coverIv);
-        desctiptionTv.setText(fullBookModel.getDescription());
+        descriptionTv.setText(fullBookModel.getDescription());
 
         if (book.isDownloaded()) {
             downloadBtn.setVisibility(View.GONE);

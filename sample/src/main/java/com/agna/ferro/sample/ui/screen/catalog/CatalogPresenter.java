@@ -11,7 +11,6 @@ import com.agna.ferro.sample.ui.navigation.Navigator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.inject.Inject;
 
@@ -116,17 +115,16 @@ class CatalogPresenter extends MvpRxPresenter<CatalogActivityView> {
     }
 
     private void updateBook(Book newBook) {
-        int bookIndex = 0;
-        for (ListIterator<Book> it = books.listIterator(); it.hasNext(); ) {
-            Book book = it.next();
+        for(int i = 0; i<books.size(); i++){
+            Book book = books.get(i);
             if (book.getId().equals(newBook.getId())) {
-                bookIndex = it.previousIndex();
+                books.set(i, newBook);
+                getView().updateBooksData(books);
+                getView().notifyItemChanged(i);
                 break;
             }
+
         }
-        books.set(bookIndex, newBook);
-        getView().updateBooksData(books);
-        getView().notifyItemChanged(bookIndex);
     }
 
     public void downloadBook(Book book) {
