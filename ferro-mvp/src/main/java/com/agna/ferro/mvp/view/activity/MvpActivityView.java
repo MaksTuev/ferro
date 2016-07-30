@@ -17,15 +17,14 @@ package com.agna.ferro.mvp.view.activity;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
 
 import com.agna.ferro.core.PSSActivity;
 import com.agna.ferro.core.PersistentScreenScope;
-import com.agna.ferro.mvp.view.BaseView;
 import com.agna.ferro.mvp.component.ScreenComponent;
 import com.agna.ferro.mvp.component.provider.ActivityProvider;
 import com.agna.ferro.mvp.component.provider.FragmentProvider;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
+import com.agna.ferro.mvp.view.BaseView;
 
 
 /**
@@ -67,6 +66,7 @@ public abstract class MvpActivityView extends PSSActivity implements BaseView {
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onPreCreate(savedInstanceState, isScreenRecreated());
         setContentView(getContentView());
         satisfyDependencies();
         bindPresenter();
@@ -81,6 +81,15 @@ public abstract class MvpActivityView extends PSSActivity implements BaseView {
      *                        changing configuration
      */
     protected void onCreate(Bundle savedInstanceState, boolean viewRecreated) {
+
+    }
+
+    /**
+     * Called before Presenter and ScreenScope are bound to the View and content view is created
+     * @param savedInstanceState
+     * @param viewRecreated
+     */
+    protected void onPreCreate(Bundle savedInstanceState, boolean viewRecreated) {
 
     }
 
@@ -126,8 +135,7 @@ public abstract class MvpActivityView extends PSSActivity implements BaseView {
         component.inject(this);
     }
 
-    @Nullable
-    private ScreenComponent getScreenComponent() {
+    public ScreenComponent getScreenComponent() {
         PersistentScreenScope screenScope = getPersistentScreenScope();
         return screenScope.getObject(ScreenComponent.class);
     }

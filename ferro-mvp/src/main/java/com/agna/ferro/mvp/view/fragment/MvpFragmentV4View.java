@@ -16,15 +16,14 @@
 package com.agna.ferro.mvp.view.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.agna.ferro.core.PSSFragmentV4;
 import com.agna.ferro.core.PersistentScreenScope;
-import com.agna.ferro.mvp.view.BaseView;
 import com.agna.ferro.mvp.component.ScreenComponent;
 import com.agna.ferro.mvp.component.provider.ActivityProvider;
 import com.agna.ferro.mvp.component.provider.FragmentProvider;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
+import com.agna.ferro.mvp.view.BaseView;
 
 
 /**
@@ -124,8 +123,7 @@ public abstract class MvpFragmentV4View extends PSSFragmentV4 implements BaseVie
         component.inject(this);
     }
 
-    @Nullable
-    private ScreenComponent getScreenComponent() {
+    public ScreenComponent getScreenComponent() {
         PersistentScreenScope screenScope = getPersistentScreenScope();
         return screenScope.getObject(ScreenComponent.class);
     }

@@ -16,6 +16,7 @@
 package com.agna.ferro.mvp.view;
 
 import com.agna.ferro.core.HasName;
+import com.agna.ferro.mvp.component.ScreenComponent;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 
 public interface BaseView extends HasName {
@@ -29,4 +30,9 @@ public interface BaseView extends HasName {
      * Bind presenter to this view
      */
     void bindPresenter();
+
+    /**
+     * @return screen component
+     */
+    ScreenComponent getScreenComponent();
 }
