@@ -18,6 +18,7 @@ package com.agna.ferro.core;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -33,7 +34,8 @@ import java.util.Set;
  * {@link PSSFragmentV4}.
  *
  * This storage destroyed only if parent screen is finally destroyed (e.g. after Activity.finish()).
- * If you manually destroy screen, based on {@link PSSFragmentV4} via FragmentManager, and you want
+ * If you manually destroy screen, without destroying root Activity (for example destroy screen
+ * based on {@link PSSFragmentV4} via FragmentManager), and you want
  * immediately destroy PersistentScreenScope need call {@link #destroy()} or
  * {@link PersistentScreenScope#destroy(AppCompatActivity, String)},
  * otherwise PersistentScreenScope to be destroyed after the root activity is finally destroyed.
@@ -50,7 +52,8 @@ public class PersistentScreenScope extends Fragment {
 
     /**
      * Destroy {@link PersistentScreenScope}
-     * This method need to use only if you manually destroy screen based on {@link PSSFragmentV4},
+     * This method need to use only if you manually destroy screen without destroying root Activity
+     * (for example destroy screen based on {@link PSSFragmentV4} via FragmentManager),
      * and you want immediately destroy PersistentScreenScope
      *
      * @param rootActivity - activity, which contains destroyed screen
@@ -66,12 +69,20 @@ public class PersistentScreenScope extends Fragment {
     }
 
     /**
+     * @return PersistentScreenScope for corresponding screen or null, if it not exist
+     */
+    @Nullable
+    public static PersistentScreenScope find(FragmentManager fragmentManager, String screenName){
+        return (PersistentScreenScope)fragmentManager
+                .findFragmentByTag(getName(screenName));
+    }
+
+    /**
      * @return PersistentScreenScope for parentActivity or null, if it not exist
      */
     @Nullable
     static PersistentScreenScope find(PSSActivity parentActivity){
-        return (PersistentScreenScope) parentActivity.getSupportFragmentManager()
-                .findFragmentByTag(getName(parentActivity.getName()));
+        return find(parentActivity.getSupportFragmentManager(), parentActivity.getName());
     }
 
     /**
@@ -79,8 +90,7 @@ public class PersistentScreenScope extends Fragment {
      */
     @Nullable
     static PersistentScreenScope find(PSSFragmentV4 parentFragment){
-        return (PersistentScreenScope) parentFragment.getFragmentManager()
-                .findFragmentByTag(getName(parentFragment.getName()));
+        return find(parentFragment.getFragmentManager(), parentFragment.getName());
     }
 
     /**
@@ -186,13 +196,25 @@ public class PersistentScreenScope extends Fragment {
     }
 
     /**
+     * Bind this PersistentScreenScope to screen
+     * for finding this PersistentScreenScope after configuration changes should be used
+     * {@link PersistentScreenScope#find(FragmentManager, String)} with same parameters
+     * @param screenName name of screen
+     * @param fragmentManager - fragmentManager of screen
+     *
+     */
+    public void attach(FragmentManager fragmentManager, String screenName){
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.add(this, PersistentScreenScope.getName(screenName));
+        ft.commit();
+    }
+
+    /**
      * Bind this PersistentScreenScope to parentActivity
      * @param parentActivity
      */
     void attach(PSSActivity parentActivity){
-        FragmentTransaction ft = parentActivity.getSupportFragmentManager().beginTransaction();
-        ft.add(this, PersistentScreenScope.getName(parentActivity.getName()));
-        ft.commit();
+        attach(parentActivity.getSupportFragmentManager(), parentActivity.getName());
     }
 
     /**
@@ -201,9 +223,7 @@ public class PersistentScreenScope extends Fragment {
      */
     void attach(PSSFragmentV4 parentFragment){
         this.setTargetFragment(parentFragment, 0);
-        FragmentTransaction ft = parentFragment.getFragmentManager().beginTransaction();
-        ft.add(this, PersistentScreenScope.getName(parentFragment.getName()));
-        ft.commit();
+        attach(parentFragment.getFragmentManager(), parentFragment.getName());
     }
 
 
