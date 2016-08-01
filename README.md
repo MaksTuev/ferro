@@ -51,6 +51,11 @@ When screen is finally destroyed, all subscriptions would be automatically unsub
 This library contains one rx operator (`OperatorFreeze`), which contains freeze logic. To apply it, you should pass this operator in method `Observable#lift()`.
 If you want to create your own base classes for View and Presenter, you should use only `ferro-core` for saving presenter and `ferro-rx` for adding freeze logic.
 
+##Conclusion
+If you don't use dagger, `ferro-mvp` may seem somewhat redundant, so you can create your own base classes for View and Presenter by using `ferro-core` for saving presenter and `ferro-rx` for adding freeze logic.
+
+I also recommend to get acquainted with project [CleanApp](https://github.com/MaksTuev/clean_app), which demonstrates how create good architecture by using MVP and basic principles of [CleanArchitecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html)
+
 ##Dependency
 ```groovy
 repositories {
