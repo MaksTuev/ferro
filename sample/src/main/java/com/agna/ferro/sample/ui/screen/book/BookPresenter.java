@@ -3,8 +3,8 @@ package com.agna.ferro.sample.ui.screen.book;
 import com.agna.ferro.mvp.component.scope.PerScreen;
 import com.agna.ferro.mvprx.MvpRxPresenter;
 import com.agna.ferro.rx.OperatorFreeze;
-import com.agna.ferro.sample.domain.entity.Book;
-import com.agna.ferro.sample.module.book.BookRepository;
+import com.agna.ferro.sample.domain.Book;
+import com.agna.ferro.sample.interactor.book.BookRepository;
 
 import javax.inject.Inject;
 

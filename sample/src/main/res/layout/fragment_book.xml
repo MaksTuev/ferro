@@ -20,7 +20,7 @@
                 android:padding="15dp"
                 android:visibility="gone">
 
-            <com.agna.ferro.sample.ui.widget.SquareImageView
+            <com.agna.ferro.sample.ui.common.widget.SquareImageView
                 android:id="@+id/book_cover_iv"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"

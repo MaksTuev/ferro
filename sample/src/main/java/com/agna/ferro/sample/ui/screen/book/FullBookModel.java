@@ -1,6 +1,6 @@
 package com.agna.ferro.sample.ui.screen.book;
 
-import com.agna.ferro.sample.domain.entity.Book;
+import com.agna.ferro.sample.domain.Book;
 
 /**
  * inner model, which used inside Book screen

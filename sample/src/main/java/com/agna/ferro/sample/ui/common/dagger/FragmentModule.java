@@ -1,4 +1,4 @@
-package com.agna.ferro.sample.ui.dagger;
+package com.agna.ferro.sample.ui.common.dagger;
 
 import com.agna.ferro.core.PersistentScreenScope;
 import com.agna.ferro.mvp.component.provider.ActivityProvider;

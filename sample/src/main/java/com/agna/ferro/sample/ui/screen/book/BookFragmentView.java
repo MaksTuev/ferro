@@ -16,7 +16,7 @@ import com.agna.ferro.mvp.component.ScreenComponent;
 import com.agna.ferro.mvp.view.fragment.MvpFragmentV4View;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 import com.agna.ferro.sample.R;
-import com.agna.ferro.sample.domain.entity.Book;
+import com.agna.ferro.sample.domain.Book;
 import com.agna.ferro.sample.ui.base.BaseActivity;
 import com.bumptech.glide.Glide;
 

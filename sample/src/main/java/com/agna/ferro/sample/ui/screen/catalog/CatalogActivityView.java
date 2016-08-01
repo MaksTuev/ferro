@@ -10,9 +10,9 @@ import android.widget.Toast;
 import com.agna.ferro.mvp.component.ScreenComponent;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 import com.agna.ferro.sample.R;
-import com.agna.ferro.sample.domain.entity.Book;
+import com.agna.ferro.sample.domain.Book;
 import com.agna.ferro.sample.ui.base.BaseActivityView;
-import com.agna.ferro.sample.ui.dagger.ActivityModule;
+import com.agna.ferro.sample.ui.common.dagger.ActivityModule;
 import com.agna.ferro.sample.ui.screen.catalog.grid.BookItemListener;
 import com.agna.ferro.sample.ui.screen.catalog.grid.BooksAdapter;
 

@@ -3,7 +3,7 @@ package com.agna.ferro.sample.ui.screen.catalog.grid;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.agna.ferro.sample.domain.entity.Book;
+import com.agna.ferro.sample.domain.Book;
 
 import java.util.ArrayList;
 import java.util.List;

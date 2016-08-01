@@ -1,4 +1,4 @@
-package com.agna.ferro.sample.ui.widget;
+package com.agna.ferro.sample.ui.common.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;

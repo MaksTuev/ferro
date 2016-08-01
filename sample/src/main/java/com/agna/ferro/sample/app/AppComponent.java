@@ -18,7 +18,7 @@ package com.agna.ferro.sample.app;
 import android.content.Context;
 
 import com.agna.ferro.mvp.component.scope.PerApplication;
-import com.agna.ferro.sample.module.book.BookRepository;
+import com.agna.ferro.sample.interactor.book.BookRepository;
 
 import dagger.Component;
 

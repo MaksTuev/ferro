@@ -1,4 +1,4 @@
-package com.agna.ferro.sample.domain.entity;
+package com.agna.ferro.sample.domain;
 
 /**
  * Book entity

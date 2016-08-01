@@ -1,10 +1,10 @@
-package com.agna.ferro.sample.module.book;
+package com.agna.ferro.sample.interactor.book;
 
 import android.content.Context;
 
 import com.agna.ferro.mvp.component.scope.PerApplication;
 import com.agna.ferro.sample.R;
-import com.agna.ferro.sample.domain.entity.Book;
+import com.agna.ferro.sample.domain.Book;
 
 import java.util.Arrays;
 import java.util.List;

@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.agna.ferro.sample.ui.widget.SquareImageView
+        <com.agna.ferro.sample.ui.common.widget.SquareImageView
             android:id="@+id/book_item_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

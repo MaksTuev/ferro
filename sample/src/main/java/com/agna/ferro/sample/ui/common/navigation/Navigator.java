@@ -1,4 +1,4 @@
-package com.agna.ferro.sample.ui.navigation;
+package com.agna.ferro.sample.ui.common.navigation;
 
 import com.agna.ferro.mvp.component.provider.ActivityProvider;
 import com.agna.ferro.mvp.component.scope.PerScreen;
