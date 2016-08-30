@@ -207,6 +207,7 @@ public class PersistentScreenScope extends Fragment {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(this, PersistentScreenScope.getName(screenName));
         ft.commit();
+        fragmentManager.executePendingTransactions();
     }
 
     /**
