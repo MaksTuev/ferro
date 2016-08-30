@@ -13,7 +13,7 @@ apply plugin: 'java'
     siteUrl = 'https://github.com/MaksTuev/ferro'
     gitUrl = 'https://github.com/MaksTuev/ferro.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'makstuev'
     developerName = 'Maks Tuev'
