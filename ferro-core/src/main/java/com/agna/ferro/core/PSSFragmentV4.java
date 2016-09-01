@@ -65,6 +65,7 @@ public abstract class PSSFragmentV4 extends Fragment implements HasName {
             screenScope = createPersistentScreenScope();
             screenScope.attach(this);
         }
+        screenScope.updateParent(getActivity());
     }
 
 

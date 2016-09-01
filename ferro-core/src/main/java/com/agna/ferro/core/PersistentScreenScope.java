@@ -15,6 +15,7 @@
  */
 package com.agna.ferro.core;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,8 @@ public class PersistentScreenScope extends Fragment {
     private final Map<ObjectKey, Object> objects = new HashMap<>();
     private boolean destroyed = false;
     private boolean screenRecreated = false;
+
+    private Activity parentActivity;
 
     /**
      * Destroy {@link PersistentScreenScope}
@@ -121,6 +124,7 @@ public class PersistentScreenScope extends Fragment {
     public void onDetach() {
         super.onDetach();
         screenRecreated = true;
+        parentActivity = null;
     }
 
     public boolean isScreenRecreated(){
@@ -207,7 +211,6 @@ public class PersistentScreenScope extends Fragment {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(this, PersistentScreenScope.getName(screenName));
         ft.commit();
-        fragmentManager.executePendingTransactions();
     }
 
     /**
@@ -244,6 +247,24 @@ public class PersistentScreenScope extends Fragment {
         if (destroyed) {
             throw new IllegalStateException("Unsupported operation, PersistentScreenScope is destroyed");
         }
+    }
+
+    /**
+     * update parent activity
+     * need call when view created
+     * @param parentActivity
+     */
+    public void updateParent(Activity parentActivity) {
+        this.parentActivity = parentActivity;
+    }
+
+    /**
+     * use this instead {@link #getActivity()}
+     * This method introduced for making Activity available before attach fragment transaction completed
+     * @return parentActivity
+     */
+    public Activity getParentActivity(){
+        return parentActivity;
     }
 
     public interface OnScopeDestroyListener {

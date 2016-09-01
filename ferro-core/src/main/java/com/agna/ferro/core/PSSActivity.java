@@ -56,6 +56,7 @@ public abstract class PSSActivity extends AppCompatActivity implements HasName {
             screenScope = createPersistentScreenScope();
             screenScope.attach(this);
         }
+        screenScope.updateParent(this);
     }
 
     protected PersistentScreenScope createPersistentScreenScope() {

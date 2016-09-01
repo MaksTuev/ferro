@@ -34,6 +34,6 @@ public class ActivityProvider {
      * @return actual Activity
      */
     public Activity get() {
-        return screenScope.getActivity();
+        return screenScope.getParentActivity();
     }
 }
