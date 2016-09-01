@@ -13,7 +13,7 @@ apply plugin: 'com.android.library'
     siteUrl = 'https://github.com/MaksTuev/ferro'
     gitUrl = 'https://github.com/MaksTuev/ferro.git'
 
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.0.2'
 
     developerId = 'makstuev'
     developerName = 'Maks Tuev'
@@ -31,8 +31,8 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
     }
     buildTypes {
         release {
@@ -49,8 +49,8 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.agna.ferro:ferro-mvp:1.0.1'
-    compile 'com.agna.ferro:ferro-rx:1.0.1'
+    compile 'com.agna.ferro:ferro-mvp:1.0.2'
+    compile 'com.agna.ferro:ferro-rx:1.0.2'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
 }
