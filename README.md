@@ -66,11 +66,11 @@ repositories {
 ```groovy
 dependencies {
       //for use the full ferro
-      compile 'com.agna.ferro:ferro-mvp-rx:1.0.0'
+      compile 'com.agna.ferro:ferro-mvp-rx:1.0.2'
       //for use the part of ferro
-      compile 'com.agna.ferro:ferro-core:1.0.0'
-      compile 'com.agna.ferro:ferro-mvp:1.0.0'
-      compile 'com.agna.ferro:ferro-rx:1.0.0'
+      compile 'com.agna.ferro:ferro-core:1.0.2'
+      compile 'com.agna.ferro:ferro-mvp:1.0.2'
+      compile 'com.agna.ferro:ferro-rx:1.0.2'
    }
 ```
 
