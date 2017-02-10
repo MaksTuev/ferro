@@ -25,42 +25,42 @@ import android.support.v7.app.AppCompatActivity;
  * The name from {@link HasName#getName()} used for distinguish one PersistentScreenScope from
  * another inside one Activity. You can use this name for logging, analytics etc.
  */
-public abstract class PSSActivity extends AppCompatActivity implements HasName {
+public abstract class PSSActivity extends AppCompatActivity implements PSSParentScreen {
 
-    private PersistentScreenScope screenScope;
+    private PSSDelegate delegate = new PSSActivityDelegate(this, this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initPersistentScreenScope();
+        delegate.init();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        delegate.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        delegate.checkUniqueScreenName();
+    }
 
     /**
      * @return true if screen was recreated after changing configuration
      */
+    @Override
     public boolean isScreenRecreated() {
-        return screenScope.isScreenRecreated();
+        return delegate.isScreenRecreated();
     }
 
     /**
      * @return {@link PersistentScreenScope} of this screen
      */
+    @Override
     public PersistentScreenScope getPersistentScreenScope() {
-        return screenScope;
-    }
-
-    private void initPersistentScreenScope() {
-        screenScope = PersistentScreenScope.find(this);
-        if (screenScope == null) {
-            screenScope = createPersistentScreenScope();
-            screenScope.attach(this);
-        }
-        screenScope.updateParent(this);
-    }
-
-    protected PersistentScreenScope createPersistentScreenScope() {
-        return new PersistentScreenScope();
+        return delegate.getScreenScope();
     }
 
 }

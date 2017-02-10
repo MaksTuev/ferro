@@ -22,55 +22,56 @@ import android.support.v4.app.Fragment;
 /**
  * This fragment provide access to own {@link PersistentScreenScope}
  * PSS - PersistentScreenScope
- *
+ * <p>
  * The name from {@link HasName#getName()} used for distinguish one PersistentScreenScope from
  * another inside one Activity. You can use this name for logging, analytics etc.
  */
-public abstract class PSSFragmentV4 extends Fragment implements HasName {
+public abstract class PSSFragmentV4 extends Fragment implements PSSParentScreen {
 
-    private PersistentScreenScope screenScope;
+    private PSSDelegate delegate = new PSSFragmentDelegate(this, this);
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initPersistentScreenScope();
+        delegate.init();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        delegate.onDestroy();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        delegate.checkUniqueScreenName();
     }
 
     /**
      * @return true if screen was recreated after changing configuration
      */
+    @Override
     public boolean isScreenRecreated() {
-        return screenScope.isScreenRecreated();
+        return delegate.isScreenRecreated();
     }
 
     /**
      * @return {@link PersistentScreenScope} of this screen
      */
+    @Override
     public PersistentScreenScope getPersistentScreenScope() {
-        return screenScope;
+        return delegate.getScreenScope();
     }
 
     /**
      * Clear all objects from own {@link PersistentScreenScope}
      */
+    @Deprecated
     public void clearPersistentScreenScope() {
+        PersistentScreenScope screenScope = delegate.getScreenScope();
         if (screenScope != null) {
             screenScope.clear();
         }
     }
-
-    private void initPersistentScreenScope() {
-        screenScope = PersistentScreenScope.find(this);
-        if (screenScope == null) {
-            screenScope = createPersistentScreenScope();
-            screenScope.attach(this);
-        }
-        screenScope.updateParent(getActivity());
-    }
-
-
-    protected PersistentScreenScope createPersistentScreenScope() {
-        return new PersistentScreenScope();
-    }
-
 }

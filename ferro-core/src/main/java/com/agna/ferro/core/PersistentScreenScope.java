@@ -33,7 +33,7 @@ import java.util.Set;
  * This class is storage of objects, which not destroyed if configuration changed.
  * PersistentScreenScope created for each screen, based on {@link PSSActivity} or
  * {@link PSSFragmentV4}.
- *
+ * <p>
  * This storage destroyed only if parent screen is finally destroyed (e.g. after Activity.finish()).
  * If you manually destroy screen, without destroying root Activity (for example destroy screen
  * based on {@link PSSFragmentV4} via FragmentManager), and you want
@@ -52,31 +52,52 @@ public class PersistentScreenScope extends Fragment {
     private boolean screenRecreated = false;
 
     private Activity parentActivity;
+    private Fragment parentFragment;
 
     /**
      * Destroy {@link PersistentScreenScope}
      * This method need to use only if you manually destroy screen without destroying root Activity
      * (for example destroy screen based on {@link PSSFragmentV4} via FragmentManager),
-     * and you want immediately destroy PersistentScreenScope
+     * and you want destroy PersistentScreenScope
      *
      * @param rootActivity - activity, which contains destroyed screen
-     * @param screenName   name of screen, see {@link PSSFragmentV4#getName()}
+     * @param screenName   name of screen, see {@link HasName#getName()}
      */
     public static void destroy(AppCompatActivity rootActivity, String screenName) {
+        destroyInternal(rootActivity, screenName);
+    }
+
+    /**
+     *
+     * Work as {@link #destroy(AppCompatActivity, String)}, but it executes immediately
+     * @param rootActivity - activity, which contains destroyed screen
+     * @param screenName   name of screen, see {@link HasName#getName()}
+     */
+    public static void destroyImmediately(AppCompatActivity rootActivity, String screenName) {
+        if (destroyInternal(rootActivity, screenName)) {
+            rootActivity.getSupportFragmentManager().executePendingTransactions();
+        }
+    }
+
+    private static boolean destroyInternal(AppCompatActivity rootActivity, String screenName) {
         PersistentScreenScope persistentScreenScope =
                 (PersistentScreenScope) rootActivity.getSupportFragmentManager()
                         .findFragmentByTag(getName(screenName));
         if (persistentScreenScope != null) {
             persistentScreenScope.destroy();
+            return true;
+        } else {
+            return false;
         }
+
     }
 
     /**
      * @return PersistentScreenScope for corresponding screen or null, if it not exist
      */
     @Nullable
-    public static PersistentScreenScope find(FragmentManager fragmentManager, String screenName){
-        return (PersistentScreenScope)fragmentManager
+    public static PersistentScreenScope find(FragmentManager fragmentManager, String screenName) {
+        return (PersistentScreenScope) fragmentManager
                 .findFragmentByTag(getName(screenName));
     }
 
@@ -84,21 +105,22 @@ public class PersistentScreenScope extends Fragment {
      * @return PersistentScreenScope for parentActivity or null, if it not exist
      */
     @Nullable
-    static PersistentScreenScope find(PSSActivity parentActivity){
+    @Deprecated
+    static PersistentScreenScope find(PSSActivity parentActivity) {
         return find(parentActivity.getSupportFragmentManager(), parentActivity.getName());
     }
 
     /**
-     * @return PersistentScreenScope for parentFragment or null, if it not exist
+     * @return PersistentScreenScope for parentPSSFragment or null, if it not exist
      */
     @Nullable
-    static PersistentScreenScope find(PSSFragmentV4 parentFragment){
+    @Deprecated
+    static PersistentScreenScope find(PSSFragmentV4 parentFragment) {
         return find(parentFragment.getFragmentManager(), parentFragment.getName());
     }
 
     /**
-     * @param screenName - name of screen, returned from {@link PSSActivity#getName()} or
-     *                   {@link PSSFragmentV4#getName()}
+     * @param screenName - name of screen, returned from {@link HasName#getName()}
      * @return name of  {@link PersistentScreenScope}
      */
     private static String getName(String screenName) {
@@ -124,10 +146,9 @@ public class PersistentScreenScope extends Fragment {
     public void onDetach() {
         super.onDetach();
         screenRecreated = true;
-        parentActivity = null;
     }
 
-    public boolean isScreenRecreated(){
+    public boolean isScreenRecreated() {
         return screenRecreated;
     }
 
@@ -163,7 +184,7 @@ public class PersistentScreenScope extends Fragment {
     public <T> T getObject(String tag) {
         assertNotDestroyed();
         ObjectKey key = new ObjectKey(tag);
-        return (T)objects.get(key);
+        return (T) objects.get(key);
     }
 
     /**
@@ -203,37 +224,19 @@ public class PersistentScreenScope extends Fragment {
      * Bind this PersistentScreenScope to screen
      * for finding this PersistentScreenScope after configuration changes should be used
      * {@link PersistentScreenScope#find(FragmentManager, String)} with same parameters
-     * @param screenName name of screen
-     * @param fragmentManager - fragmentManager of screen
      *
+     * @param screenName      name of screen
+     * @param fragmentManager - fragmentManager of screen
      */
-    public void attach(FragmentManager fragmentManager, String screenName){
+    public void attach(FragmentManager fragmentManager, String screenName) {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(this, PersistentScreenScope.getName(screenName));
         ft.commit();
     }
 
     /**
-     * Bind this PersistentScreenScope to parentActivity
-     * @param parentActivity
-     */
-    void attach(PSSActivity parentActivity){
-        attach(parentActivity.getSupportFragmentManager(), parentActivity.getName());
-    }
-
-    /**
-     * Bind this PersistentScreenScope to parentFragment
-     * @param parentFragment
-     */
-    void attach(PSSFragmentV4 parentFragment){
-        this.setTargetFragment(parentFragment, 0);
-        attach(parentFragment.getFragmentManager(), parentFragment.getName());
-    }
-
-
-    /**
      * Destroy scope
-     * This method need to use only if you manually destroy screen based on {@link PSSFragmentV4},
+     * This method need to use only if you manually destroy screen based on Fragment,
      * and you want immediately destroy PersistentScreenScope
      */
     public void destroy() {
@@ -243,6 +246,14 @@ public class PersistentScreenScope extends Fragment {
         fragmentTransaction.commit();
     }
 
+    /**
+     * Work as {@link #destroy()}, but it executes immediately
+     */
+    public void destroyImmediately() {
+        destroy();
+        getFragmentManager().executePendingTransactions();
+    }
+
     private void assertNotDestroyed() {
         if (destroyed) {
             throw new IllegalStateException("Unsupported operation, PersistentScreenScope is destroyed");
@@ -250,21 +261,59 @@ public class PersistentScreenScope extends Fragment {
     }
 
     /**
-     * update parent activity
-     * need call when view created
+     * set parent activity
+     * need call when fragment or activity, which is parent of this screen scope, created
+     *
      * @param parentActivity
      */
-    public void updateParent(Activity parentActivity) {
+    public void setParentActivity(Activity parentActivity) {
         this.parentActivity = parentActivity;
+    }
+
+    /**
+     * set parent fragment
+     * need call when fragment, which is parent of this screen scope, created
+     *
+     * @param parentFragment
+     */
+    public void setParentPSSFragment(Fragment parentFragment) {
+        this.parentFragment = parentFragment;
+    }
+
+
+    /**
+     * clear parent activity
+     * need call when  fragment or activity, which is parent of this screen scope, destroyed
+     */
+    public void clearParentActivity() {
+        this.parentActivity = null;
+    }
+
+
+    /**
+     * clear parent activity
+     * need call when fragment, which is parent of this screen scope, destroyed
+     */
+    public void clearParentPSSFragment() {
+        this.parentFragment = null;
     }
 
     /**
      * use this instead {@link #getActivity()}
      * This method introduced for making Activity available before attach fragment transaction completed
+     *
      * @return parentActivity
      */
-    public Activity getParentActivity(){
+    public Activity getParentActivity() {
         return parentActivity;
+    }
+
+    /**
+     * @return parent fragment for this PersistentScreenScope
+     * return null if PersistentScreenScope attached for Activity
+     */
+    public Fragment getParentPSSFragment() {
+        return parentFragment;
     }
 
     public interface OnScopeDestroyListener {
