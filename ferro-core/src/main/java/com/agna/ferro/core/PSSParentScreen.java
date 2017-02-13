@@ -1,10 +1,9 @@
 package com.agna.ferro.core;
 
+/**
+ * interface for screen, which is parent of {@link PersistentScreenScope}
+ */
 public interface PSSParentScreen extends HasName {
-    /**
-     * @return true if screen was recreated after changing configuration
-     */
-    boolean isScreenRecreated();
 
     /**
      * @return {@link PersistentScreenScope} of this screen

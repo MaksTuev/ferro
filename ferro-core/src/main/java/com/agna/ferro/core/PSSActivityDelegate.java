@@ -10,7 +10,7 @@ public class PSSActivityDelegate extends PSSDelegate {
 
     private final FragmentActivity parentActivity;
 
-    protected PSSActivityDelegate(HasName screenNameProvider, FragmentActivity parentActivity) {
+    public PSSActivityDelegate(HasName screenNameProvider, FragmentActivity parentActivity) {
         super(screenNameProvider);
         this.parentActivity = parentActivity;
     }

@@ -50,7 +50,6 @@ public abstract class PSSActivity extends AppCompatActivity implements PSSParent
     /**
      * @return true if screen was recreated after changing configuration
      */
-    @Override
     public boolean isScreenRecreated() {
         return delegate.isScreenRecreated();
     }

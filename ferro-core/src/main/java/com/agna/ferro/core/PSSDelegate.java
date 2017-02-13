@@ -12,7 +12,7 @@ public abstract class PSSDelegate {
     private PersistentScreenScope screenScope;
     private HasName screenNameProvider;
 
-    protected PSSDelegate(HasName screenNameProvider) {
+    public PSSDelegate(HasName screenNameProvider) {
         this.screenNameProvider = screenNameProvider;
     }
 
@@ -60,7 +60,7 @@ public abstract class PSSDelegate {
         }
     }
 
-    public void checkUniqueScreenName(Object anotherScreen) {
+    private void checkUniqueScreenName(Object anotherScreen) {
         if (screenNameProvider != anotherScreen) {
             if(HasName.class.isInstance(anotherScreen)){
                 String anotherName = ((PSSParentScreen)anotherScreen).getName();

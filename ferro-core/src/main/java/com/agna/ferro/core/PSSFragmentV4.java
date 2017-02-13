@@ -51,7 +51,6 @@ public abstract class PSSFragmentV4 extends Fragment implements PSSParentScreen 
     /**
      * @return true if screen was recreated after changing configuration
      */
-    @Override
     public boolean isScreenRecreated() {
         return delegate.isScreenRecreated();
     }
