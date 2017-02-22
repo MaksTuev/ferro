@@ -17,7 +17,7 @@ buildscript {
 
 //tasks.findByPath(':ferro-core:javadoc').enabled = false
 //tasks.findByPath(':ferro-mvp:javadoc').enabled = false
-tasks.findByPath(':ferro-mvp-rx:javadoc').enabled = false
+//tasks.findByPath(':ferro-mvp-rx:javadoc').enabled = false
 //tasks.findByPath(':ferro-rx:javadoc').enabled = false
 
 
