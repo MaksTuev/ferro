@@ -4,11 +4,22 @@ package com.agna.ferro.rx;
 import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableOperator;
 import io.reactivex.Observable;
+import io.reactivex.ObservableOperator;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.ArrayCompositeDisposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 
+
+/**
+ * This operator freezes Completable events (onError, onComplete) when freeze selector emits true,
+ * and unfreeze it after freeze selector emits false.
+ * If freeze selector does not emit any elements, all events would be frozen
+ *
+ * Completable after this operator can emit event in different threads
+ * You should pass this operator in method {@link io.reactivex.Completable#lift(CompletableOperator)}
+ * for apply it
+ */
 public class CompletableOperatorFreeze implements CompletableOperator {
 
     private final Observable<Boolean> freezeSelector;
@@ -19,9 +30,7 @@ public class CompletableOperatorFreeze implements CompletableOperator {
 
     @Override
     public CompletableObserver apply(CompletableObserver child) throws Exception {
-        return new FreezeObserver(
-                child,
-                freezeSelector);
+        return new FreezeObserver(child, freezeSelector);
     }
 
     private static final class FreezeObserver implements CompletableObserver {

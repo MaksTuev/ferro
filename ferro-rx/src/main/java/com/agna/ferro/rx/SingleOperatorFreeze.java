@@ -9,6 +9,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.disposables.ArrayCompositeDisposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 
+/**
+ * This operator freezes Single events (onError, onSuccess) when freeze selector emits true,
+ * and unfreeze it after freeze selector emits false.
+ * If freeze selector does not emit any elements, all events would be frozen
+ *
+ * Single after this operator can emit event in different threads
+ * You should pass this operator in method {@link io.reactivex.Single#lift(SingleOperator)} for apply it
+ */
 public class SingleOperatorFreeze<T> implements SingleOperator<T, T> {
 
     private final Observable<Boolean> freezeSelector;
@@ -19,9 +27,7 @@ public class SingleOperatorFreeze<T> implements SingleOperator<T, T> {
 
     @Override
     public SingleObserver<? super T> apply(SingleObserver<? super T> child) throws Exception {
-        return new FreezeObserver<>(
-                child,
-                freezeSelector);
+        return new FreezeObserver<>(child, freezeSelector);
     }
 
     private static final class FreezeObserver<T> implements SingleObserver<T> {

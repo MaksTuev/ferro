@@ -10,6 +10,7 @@ import java.util.ListIterator;
 
 import io.reactivex.FlowableOperator;
 import io.reactivex.Observable;
+import io.reactivex.ObservableOperator;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.Exceptions;
@@ -18,6 +19,19 @@ import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.subscribers.SerializedSubscriber;
 
+/**
+ * This operator freezes Flowable events (onNext, onError, onComplete) when freeze selector emits true,
+ * and unfreeze it after freeze selector emits false.
+ * If freeze selector does not emit any elements, all events would be frozen
+ * If you want reduce num of elements in freeze buffer, you can define replaceFrozenEventPredicate.
+ * When Observable frozen and source observable emits normal (onNext) event, before it is added to
+ * the end of buffer, it compare with all already buffered events using replaceFrozenEventPredicate,
+ * and if replaceFrozenEventPredicate return true, buffered element would be removed.
+ *
+ * Flowable after this operator can emit event in different threads
+ * You should pass this operator in method {@link io.reactivex.Flowable#lift(FlowableOperator)}
+ * for apply it
+ */
 public class FlowableOperatorFreeze<T> implements FlowableOperator<T, T> {
 
     private final Observable<Boolean> freezeSelector;

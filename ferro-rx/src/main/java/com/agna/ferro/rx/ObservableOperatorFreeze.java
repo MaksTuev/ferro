@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOperator;
 import io.reactivex.Observer;
+import io.reactivex.SingleOperator;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.BiFunction;
@@ -15,6 +16,19 @@ import io.reactivex.internal.disposables.ArrayCompositeDisposable;
 import io.reactivex.internal.disposables.DisposableHelper;
 import io.reactivex.observers.SerializedObserver;
 
+/**
+ * This operator freezes Observable events (onNext, onError, onComplete) when freeze selector emits true,
+ * and unfreeze it after freeze selector emits false.
+ * If freeze selector does not emit any elements, all events would be frozen
+ * If you want reduce num of elements in freeze buffer, you can define replaceFrozenEventPredicate.
+ * When Observable frozen and source observable emits normal (onNext) event, before it is added to
+ * the end of buffer, it compare with all already buffered events using replaceFrozenEventPredicate,
+ * and if replaceFrozenEventPredicate return true, buffered element would be removed.
+ *
+ * Observable after this operator can emit event in different threads
+ * You should pass this operator in method {@link io.reactivex.Observable#lift(ObservableOperator)}
+ * for apply it
+ */
 public class ObservableOperatorFreeze<T> implements ObservableOperator<T, T> {
 
     private final Observable<Boolean> freezeSelector;
