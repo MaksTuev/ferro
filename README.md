@@ -48,7 +48,7 @@ would be also frozen when screen is paused and unfrozen when screen is resumed.
 When screen is finally destroyed, all subscriptions would be automatically unsubscribed.
 
 ##ferro-rx
-This library contains one rx operator (`OperatorFreeze`), which contains freeze logic. To apply it, you should pass this operator in method `Observable#lift()`.
+This library contains rx operators (`ObservableOperatorFreeze`, `MaybeOperatorFreeze`, `SingleOperatorFreeze`, `CompletableOperatorFreeze`, `FlowableOperatorFreeze` for RxJava2 and `OperatorFreeze` for RxJava1), which contains freeze logic. To apply it, you should pass this operator in method `Observable#lift()`.
 
 
 ##Conclusion 
@@ -65,12 +65,14 @@ repositories {
 
 ```groovy
 dependencies {
-      //for use the full ferro
+      //for use the full ferro (stil not support RxJava2)
       compile 'com.agna.ferro:ferro-mvp-rx:1.1.1'
       //for use the part of ferro
       compile 'com.agna.ferro:ferro-core:1.1.1'
       compile 'com.agna.ferro:ferro-mvp:1.1.1'
-      compile 'com.agna.ferro:ferro-rx:1.0.2'
+      compile 'com.agna.ferro:ferro-rx:1.0.2' 
+      //or if you use RxJava2
+      compile 'com.agna.ferro:ferro-rx:2.0.0'
    }
 ```
 
