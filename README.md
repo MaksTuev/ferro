@@ -54,8 +54,6 @@ This library contains rx operators (`ObservableOperatorFreeze`, `MaybeOperatorFr
 ##Conclusion 
 Nobody likes to do the basic logic of the project dependent on third-party libraries. So, the Ferro is, generally speaking, set of simple ideas, and you can create you own base classes by using this ideas.
 
-I also recommend to get acquainted with project [CleanApp](https://github.com/MaksTuev/clean_app), which demonstrates how create good architecture by using MVP and basic principles of [CleanArchitecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html)
-
 ##Dependency
 ```groovy
 repositories {
