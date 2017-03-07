@@ -69,7 +69,7 @@ public abstract class PSSDelegate {
 
     private void checkUniqueScreenName(Object anotherScreen) {
         if (screenNameProvider != anotherScreen && anotherScreen instanceof HasName) {
-            String anotherName = ((PSSParentScreen) anotherScreen).getName();
+            String anotherName = ((HasName) anotherScreen).getName();
             if (anotherName.equals(screenNameProvider.getName())) {
                 throw new IllegalStateException("two screens has same name: " + anotherScreen
                         + ", " + screenNameProvider);
