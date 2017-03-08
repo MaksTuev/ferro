@@ -63,7 +63,7 @@ repositories {
 
 ```groovy
 dependencies {
-      //for use the full ferro (stil not support RxJava2)
+      //for use the full ferro (still not support RxJava2)
       compile 'com.agna.ferro:ferro-mvp-rx:1.1.1'
       //for use the part of ferro
       compile 'com.agna.ferro:ferro-core:1.1.1'
