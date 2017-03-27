@@ -64,10 +64,10 @@ repositories {
 ```groovy
 dependencies {
       //for use the full ferro (still not support RxJava2)
-      compile 'com.agna.ferro:ferro-mvp-rx:1.1.1'
+      compile 'com.agna.ferro:ferro-mvp-rx:1.1.2'
       //for use the part of ferro
-      compile 'com.agna.ferro:ferro-core:1.1.1'
-      compile 'com.agna.ferro:ferro-mvp:1.1.1'
+      compile 'com.agna.ferro:ferro-core:1.1.2'
+      compile 'com.agna.ferro:ferro-mvp:1.1.2'
       compile 'com.agna.ferro:ferro-rx:1.0.2' 
       //or if you use RxJava2
       compile 'com.agna.ferro:ferro-rx:2.0.0'
