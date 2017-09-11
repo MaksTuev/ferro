@@ -1,4 +1,4 @@
-#Ferro
+# Ferro
 
 Simple and powerful MVP library for Android 
 
@@ -16,12 +16,12 @@ The schematic work of ferro:
 Ferro is divided into 3 layers, each of one adds behavior to the previous. So you can use only part of Ferro, if you want.
 
 The first layer:
-##ferro-core
+## ferro-core
 This library contains base classes for Activity and Fragment (`PSSActivity, PSSFragmentV4`, PSS - persistent screen scope). For each activity and fragment, based on this classes, will be created `PersistentScreenScope`.  You can get it by calling the method `PSSActivity#getPersistentScreenScope` or `PSSFragmentV4#getPersistentScreenScope`. This object isn't destroyed when configuration changed, it is only destroyed when screen is finally destroyed (e.g. after call `Activity#finish()`). You can add listener, which will be called when `PersistentScreenScope` destroyed. It has methods for storing and getting objects.
 In reality, `PersistentScreenScope` is actually a retained Fragment without view.
 
 This mechanism is perfect for storing a presenter, that is done in the next extention:
-##ferro-mvp
+## ferro-mvp
 This library contains base classes for view, presenter and screen component. For each screen you need to extend `ScreenComponent`, `MvpPresenter` and `MvpActivityView` or `MvpFragmentV4View`. 
 
 The `ScreenComponent` will be saved in `PersistentScreenScope` and reused when view recreated. In method `ScreenComponent#inject(view)` you need to insert presenter to the view. The easiest way to do it is to use dagger component as `ScreenComponent`. Due to this mechanism presenter is reused after configuration change. 
@@ -36,7 +36,7 @@ It's lifecycle of screen's objects:
 ![lifecycle](ferro_lifecycle.png)
 
 The next extention adds freeze logic for Rx events:
-##ferro-mvp-rx
+## ferro-mvp-rx
 Class `MvpRxPesenter` contains freeze logic, scematic work of which shown in gif above. This class should be extended instead of `MvpPresenter`.
 
 If you subscribe to `Observable` via one of `MvpRxPesenter#subscribe()` methods,
@@ -47,14 +47,14 @@ would be also frozen when screen is paused and unfrozen when screen is resumed.
 
 When screen is finally destroyed, all subscriptions would be automatically unsubscribed.
 
-##ferro-rx
+## ferro-rx
 This library contains rx operators (`ObservableOperatorFreeze`, `MaybeOperatorFreeze`, `SingleOperatorFreeze`, `CompletableOperatorFreeze`, `FlowableOperatorFreeze` for RxJava2 and `OperatorFreeze` for RxJava1), which contains freeze logic. To apply it, you should pass this operator in method `Observable#lift()`.
 
 
-##Conclusion 
+## Conclusion 
 Nobody likes to do the basic logic of the project dependent on third-party libraries. So, the Ferro is, generally speaking, set of simple ideas, and you can create you own base classes by using this ideas.
 
-##Dependency
+## Dependency
 ```groovy
 repositories {
       jcenter()
