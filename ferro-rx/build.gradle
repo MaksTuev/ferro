@@ -1,5 +1,16 @@
 plugins {
     id 'java'
+    id 'maven-publish'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "com.agna.ferro"
+            artifactId = "ferro-rx"
+            version = "3.0.0"
+        }
+    }
 }
 
 /*ext {
