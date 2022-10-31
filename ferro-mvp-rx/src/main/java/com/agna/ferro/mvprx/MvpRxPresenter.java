@@ -15,12 +15,11 @@
  */
 package com.agna.ferro.mvprx;
 
-import android.support.annotation.CallSuper;
 
+import androidx.annotation.CallSuper;
 import com.agna.ferro.mvp.view.BaseView;
 import com.agna.ferro.mvp.presenter.MvpPresenter;
 import com.agna.ferro.rx.OperatorFreeze;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -235,11 +234,11 @@ public class MvpRxPresenter<V extends BaseView> extends MvpPresenter<V> {
 
 
     protected <T> OperatorFreeze<T> createOperatorFreeze(Func2<T, T, Boolean> replaceFrozenEventPredicate) {
-        return new OperatorFreeze<>(freezeSelector, replaceFrozenEventPredicate);
+        return new OperatorFreeze<T>(freezeSelector, replaceFrozenEventPredicate);
     }
 
     protected <T> OperatorFreeze<T> createOperatorFreeze() {
-        return new OperatorFreeze<>(freezeSelector);
+        return new OperatorFreeze<T>(freezeSelector);
     }
 
     protected boolean isSubscriptionInactive(Subscription subscription) {

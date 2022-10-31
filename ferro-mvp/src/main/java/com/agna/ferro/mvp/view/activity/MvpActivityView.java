@@ -16,8 +16,8 @@
 package com.agna.ferro.mvp.view.activity;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 
+import androidx.annotation.LayoutRes;
 import com.agna.ferro.core.PSSActivity;
 import com.agna.ferro.core.PersistentScreenScope;
 import com.agna.ferro.mvp.component.ScreenComponent;

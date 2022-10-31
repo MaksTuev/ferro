@@ -16,7 +16,7 @@
 package com.agna.ferro.core;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * This activity provide access to own {@link PersistentScreenScope}

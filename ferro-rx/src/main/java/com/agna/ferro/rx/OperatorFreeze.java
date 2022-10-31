@@ -15,7 +15,6 @@
  */
 package com.agna.ferro.rx;
 
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
